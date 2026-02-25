@@ -1,4 +1,4 @@
-name: Build with Maven
+name: Build and Publish with Maven
 
 on:
   push:
@@ -12,21 +12,33 @@ jobs:
     strategy:
       matrix:
         platform: [ ubuntu-latest ]
-        java-version: [ 8 ]
+        java-version: [ 8 ] # OpenMRS 1.x/2.x usually requires Java 8
 
     runs-on: ${{ matrix.platform }}
-    env:
-      PLATFORM: ${{ matrix.platform }}
-      JAVA_VERSION: ${{ matrix.java-version }}
+
+    # Required for pushing to GitHub Packages
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
+          java-version: ${{ matrix.matrix.java-version }}
           distribution: 'temurin'
-          java-version: ${{ matrix.java-version }}
-      - name: Build with Maven
-        id: build_with_maven
-        run: |
-          mvn clean verify --batch-mode --file pom.xml
+          # This creates a temporary settings.xml mapped to the 'github' server ID
+          server-id: github
+          settings-path: ${{ github.workspace }}
+
+      - name: Build and Verify
+        run: mvn clean verify --batch-mode --file pom.xml
+
+      - name: Publish to GitHub Packages
+        # Only deploy on pushes to main, not on Pull Requests
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: mvn deploy -DskipTests --batch-mode -s ${{ github.workspace }}/settings.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
