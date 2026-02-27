@@ -13,11 +13,11 @@
 		</developer>
 	</developers>
 	<scm>
-		<connection>scm:git:git@github.com:openmrs/openmrs-content-referenceapplication-demo.git</connection>
-		<developerConnection>scm:git:git@github.com:openmrs/openmrs-content-referenceapplication-demo.git</developerConnection>
-		<url>https://github.com/openmrs/openmrs-content-referenceapplication-demo.git</url>
-	  <tag>HEAD</tag>
-  </scm>
+		<connection>scm:git:@gitgithub.com/Thrust-Devs-Ltd/openmrs-mwatu-content-referenceapplication-demo.git</connection>
+		<developerConnection>scm:git:git@github.com:Thrust-Devs-Ltd/openmrs-mwatu-content-referenceapplication-demo.git</developerConnection>
+		<url>https://github.com/Thrust-Devs-Ltd/openmrs-mwatu-content-referenceapplication-demo.git</url>
+		<tag>HEAD</tag>
+	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<configuration.dir>${project.basedir}/configuration</configuration.dir>
