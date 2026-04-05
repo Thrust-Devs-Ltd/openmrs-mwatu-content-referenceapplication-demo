@@ -27,10 +27,10 @@ jobs:
       - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: ${{ matrix.matrix.java-version }}
+          java-version: '8'
           distribution: 'temurin'
-          # This creates a temporary settings.xml mapped to the 'github' server ID
-          server-id: github
+          # This creates a temporary settings.xml mapped to the 'thrust-devs-content-repo' server ID
+          server-id: thrust-devs-content-repo
           settings-path: ${{ github.workspace }}
 
       - name: Build and Verify
@@ -41,4 +41,5 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: mvn deploy -DskipTests --batch-mode -s ${{ github.workspace }}/settings.xml
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_USERNAME: ${{ secrets.ORG_PUBLISH_USERNAME }}
+          GITHUB_TOKEN: ${{ secrets.ORG_PUBLISH_TOKEN }}
